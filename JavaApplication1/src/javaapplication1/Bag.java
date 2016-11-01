@@ -40,6 +40,7 @@ class Bag extends ItemsContainer {
         } else {
             Iterator iter = items.iterator();
             Item removedItem = (Item) iter.next();
+            removedItem.pull();
             iter.remove();
             return removedItem;
         }

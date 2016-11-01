@@ -1,19 +1,25 @@
 package javaapplication1;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.PriorityQueue;
+import java.util.ArrayDeque;
 
 class Pile extends ItemsContainer {
     private final float maxSize;
-    PriorityQueue items = new PriorityQueue();
+    ArrayDeque<Item> items = new ArrayDeque<Item>();
     public Pile(int ms, String n) {
         super(0, n, null);
         maxSize = Math.abs(ms);
     }
     @Override
-    public boolean addItem(Item i) { return ( !isFull() && isFlat(i)) ? super.addItem(i) : false; }
+    public boolean addItem(Item i) { return ( !isFull() && isFlat(i)) ? items.add(i) : false; }
     public boolean isFull() { return items.size() == maxSize; }
     public boolean isFlat(Item i) { return i.getProps().contains("flat"); } 
-    public Item pollItem() { return (Item) items.poll(); }
+    public Item pollItem() {
+        Item removedItem = items.poll();
+        if (removedItem == null) {
+            return null;
+        } else {
+            removedItem.pull();
+            return removedItem;
+        }
+    }
 }

@@ -6,14 +6,16 @@ class Item {
     private final float weight;
     private final String name;
     private final HashSet<String> props;
+    boolean inContains;
 
     Item(float w, String n, HashSet<String> p) {
         weight = w;
         name = n;
         props = p;
+        inContains = false;
     }
     Item(float w, String n) {
-        this(w, n, new HashSet<String>());
+        this(w, n, null);
     }
     Item(String n) {
         this(0, n);
@@ -24,6 +26,9 @@ class Item {
         props.forEach((String t) -> {sb.append(t);});
     	return name + ":" + weight + " кг. Свойства: " + sb.toString();
     }
+    void place() { inContains = true; }
+    void pull() { inContains = false; }
+    boolean addProps (String prop) { return props.add(prop); };
     float getWeight() {return weight;}
     String getName() { return name; }
     HashSet<String> getProps() { return props; }
@@ -35,7 +40,16 @@ abstract class ItemsContainer extends Item
         super(w, n, p);
     }
     boolean addItem(Item i) {
-        return items.add(i);
+        if (i.inContains) {
+            return false;
+        } else {
+            if (items.add(i)) {
+                i.place();
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
     @Override
     float getWeight() {return super.getWeight();}

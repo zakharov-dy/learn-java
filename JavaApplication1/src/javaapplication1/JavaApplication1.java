@@ -30,7 +30,9 @@ public class JavaApplication1 {
 //        System.out.println(pile.isFlat(item5));
         System.out.println(pile.addItem(item3));
         System.out.println(pile.addItem(item4));
+        System.out.println(pile.pollItem().getInfo());
         System.out.println(pile.addItem(item5));
-        System.out.println(pile.items.size());
+        System.out.println(pile.addItem(item4));
+//        System.out.println(pile.pollItem().getInfo());
     }
 }
