@@ -39,7 +39,7 @@ abstract class ItemsContainer extends Item
     public ItemsContainer(float w, String n, HashSet<String> p) {
         super(w, n, p);
     }
-    boolean addItem(Item i) {
+    boolean addItem(Item i) throws ItemStoreException {
         if (i.inContains) {
             return false;
         } else {

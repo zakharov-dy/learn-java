@@ -10,7 +10,11 @@ class Pile extends ItemsContainer {
         maxSize = Math.abs(ms);
     }
     @Override
-    public boolean addItem(Item i) { return ( !isFull() && isFlat(i)) ? items.add(i) : false; }
+    public boolean addItem(Item i) throws ItemStoreException
+    {   
+        if (isFull()) throw new ItemStoreException("isFull");
+        return isFlat(i) ? super.addItem(i) : false; 
+    }
     public boolean isFull() { return items.size() == maxSize; }
     public boolean isFlat(Item i) { return i.getProps().contains("flat"); } 
     public Item pollItem() {

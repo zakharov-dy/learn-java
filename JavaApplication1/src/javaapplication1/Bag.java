@@ -24,11 +24,9 @@ class Bag extends ItemsContainer {
     @Override
     float getWeight () {return super.getWeight() + getItemsWeight();}
     @Override
-    public boolean addItem(Item i) {
-        float w = getItemsWeight() + i.getWeight();
-        if (maxWeight < w) {
-            System.out.println("слишком тяжело, мешок может порваться");
-            return false;
+    public boolean addItem(Item i) throws ItemStoreException {
+        if(maxWeight < (getItemsWeight() + i.getWeight())) {
+            throw new ItemStoreException("isFull");
         } else {
             return super.addItem(i);
         }
