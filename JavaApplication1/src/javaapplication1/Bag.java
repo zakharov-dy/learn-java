@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Optional;
 
-class Bag extends ItemsContainer {
+public class Bag extends ItemsContainer {
     private final float maxWeight;
     public Bag(float w, float mw, String n, HashSet<String> p) {
         super(w, n, p);
@@ -22,7 +22,7 @@ class Bag extends ItemsContainer {
         }
     }
     @Override
-    float getWeight () {return super.getWeight() + getItemsWeight();}
+    public float getWeight () {return super.getWeight() + getItemsWeight();}
     @Override
     public boolean addItem(Item i) throws ItemStoreException {
         if(maxWeight < (getItemsWeight() + i.getWeight())) {

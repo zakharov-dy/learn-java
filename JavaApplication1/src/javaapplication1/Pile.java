@@ -2,7 +2,7 @@ package javaapplication1;
 
 import java.util.ArrayDeque;
 
-class Pile extends ItemsContainer {
+public class Pile extends ItemsContainer {
     private final float maxSize;
     ArrayDeque<Item> items = new ArrayDeque<Item>();
     public Pile(int ms, String n) {
@@ -22,7 +22,7 @@ class Pile extends ItemsContainer {
         if (removedItem == null) {
             return null;
         } else {
-            removedItem.pull();
+//            removedItem.pull();
             return removedItem;
         }
     }
