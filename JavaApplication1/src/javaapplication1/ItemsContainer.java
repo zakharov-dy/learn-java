@@ -1,16 +1,17 @@
 package javaapplication1;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 public abstract class ItemsContainer extends Item {
 
-    HashSet<Item> items = new HashSet<Item>();
+    Collection<Item> items;
     public ItemsContainer(float w, String n, HashSet<String> p) {
         super(w, n, p);
     }
 
     boolean addItem(Item i) throws ItemStoreException {
-        if (i.inContains) {
+        if (i.getContainsCondition()) {
             return false;
         } else {
             if (items.add(i)) {
@@ -21,6 +22,7 @@ public abstract class ItemsContainer extends Item {
             }
         }
     }
+    public int itemSize() { return items.size(); }
 
     @Override
     public float getWeight() {

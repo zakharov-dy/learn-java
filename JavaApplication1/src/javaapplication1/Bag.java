@@ -9,6 +9,7 @@ public class Bag extends ItemsContainer {
     public Bag(float w, float mw, String n, HashSet<String> p) {
         super(w, n, p);
         maxWeight = mw;
+        items = new HashSet<Item>();
     }
     float getItemsWeight () {
         if (items.isEmpty()) {
@@ -27,9 +28,8 @@ public class Bag extends ItemsContainer {
     public boolean addItem(Item i) throws ItemStoreException {
         if(maxWeight < (getItemsWeight() + i.getWeight())) {
             throw new ItemStoreException("isFull");
-        } else {
-            return super.addItem(i);
         }
+        return super.addItem(i);
     }
     public Item removeRandomItem() {
         if (items.isEmpty()) {

@@ -6,7 +6,7 @@ public class Item {
     private final float weight;
     private final String name;
     private final HashSet<String> props;
-    boolean inContains;
+    private boolean inContains;
 
     public Item(float w, String n, HashSet<String> p) {
         weight = w;
@@ -26,6 +26,7 @@ public class Item {
         props.forEach((String t) -> {sb.append(t);});
     	return name + ":" + weight + " кг. Свойства: " + sb.toString();
     }
+    public boolean containsProp(String prop) { return getProps().contains(prop); }
     public boolean getContainsCondition() { return inContains; }
     void place() { inContains = true; }
     void pull() { inContains = false; }
@@ -34,24 +35,3 @@ public class Item {
     public String getName() { return name; }
     HashSet<String> getProps() { return props; }
 }
-//abstract class ItemsContainer extends Item
-//{
-//    HashSet<Item> items = new HashSet<Item>();;
-//    public ItemsContainer(float w, String n, HashSet<String> p) {
-//        super(w, n, p);
-//    }
-//    boolean addItem(Item i) throws ItemStoreException {
-//        if (i.inContains) {
-//            return false;
-//        } else {
-//            if (items.add(i)) {
-//                i.place();
-//                return true;
-//            } else {
-//                return false;
-//            }
-//        }
-//    }
-//    @Override
-//    float getWeight() {return super.getWeight();}
-//}
