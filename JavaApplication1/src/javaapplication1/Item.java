@@ -1,5 +1,8 @@
 package javaapplication1;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 public class Item {
@@ -8,13 +11,16 @@ public class Item {
     private final HashSet<String> props;
     private boolean inContains;
 
-    public Item(float w, String n, HashSet<String> p) {
+    public Item(float w, String n, String[] p) {
         weight = w;
         name = n;
-        props = p;
+        props = (p == null) ? new HashSet<String>() : new HashSet<String>(Arrays.asList(p));
+//        Collections.addAll(props, p);
+//        props = new HashSet<String>(Arrays.asList(p));
         inContains = false;
     }
     public Item(float w, String n) {
+//        TODO: Придумать что-нибудь другое
         this(w, n, null);
     }
     public Item(String n) {

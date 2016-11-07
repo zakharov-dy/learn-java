@@ -1,16 +1,18 @@
 package javaapplication1;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 public abstract class ItemsContainer extends Item {
 
     Collection<Item> items;
-    public ItemsContainer(float w, String n, HashSet<String> p) {
+    public ItemsContainer(float w, String n, String[] p) {
         super(w, n, p);
     }
 
     boolean addItem(Item i) throws ItemStoreException {
+        if (i==this) {
+            throw new ItemStoreException("add self");
+        }
         if (i.getContainsCondition()) {
             return false;
         } else {
@@ -18,7 +20,7 @@ public abstract class ItemsContainer extends Item {
                 i.place();
                 return true;
             } else {
-                return false;
+                throw new ItemStoreException("item didn`t add");
             }
         }
     }

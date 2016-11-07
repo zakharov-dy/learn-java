@@ -15,7 +15,8 @@ public class Pile extends ItemsContainer {
     public boolean addItem(Item i) throws ItemStoreException
     {   
         if (isFull()) throw new ItemStoreException("isFull");
-        return i.containsProp("flat") ? super.addItem(i) : false; 
+        if (!i.containsProp("flat")) throw new ItemStoreException("!flat");
+        return super.addItem(i);
     }
     public boolean isFull() { return items.size() == maxSize; }
     public Item pollItem() {

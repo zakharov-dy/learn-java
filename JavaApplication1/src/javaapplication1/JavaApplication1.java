@@ -1,17 +1,13 @@
 package javaapplication1;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
-
 public class JavaApplication1 {
 
     public static void main(String[] args) {
-        Item item1 = new Item( 12, "item", new HashSet<String>(Arrays.asList("Ха", "хА")));
-        Item item2 = new Item( 14, "item2", new HashSet<String>(Arrays.asList("Ха", "хА", "ХАхаХа")));
-        Item item3 = new Item( 14, "item3", new HashSet<String>(Arrays.asList("flat")));
-        Item item4 = new Item( 14, "item4", new HashSet<String>(Arrays.asList("flat")));
-        Item item5 = new Item( 14, "item5", new HashSet<String>(Arrays.asList("flat")));
+        Item item1 = new Item( 12, "item", new String[]{"Ха", "хА"});
+        Item item2 = new Item( 14, "item2", new String[]{"Ха", "хА", "ХАхаХа"});
+        Item item3 = new Item( 14, "item3", new String[]{"flat"});
+        Item item4 = new Item( 14, "item4", new String[]{"flat"});
+        Item item5 = new Item(14, "item5", new String[]{"flat"});
         Pile pile = new Pile(2, "pile");
 //        pile.addItem(item3);
 //        pile.addItem(item4);

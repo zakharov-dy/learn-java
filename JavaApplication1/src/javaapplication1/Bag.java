@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public class Bag extends ItemsContainer {
     private final float maxWeight;
-    public Bag(float w, float mw, String n, HashSet<String> p) {
+    public Bag(float w, float mw, String n, String[] p) {
         super(w, n, p);
         maxWeight = mw;
         items = new HashSet<Item>();
