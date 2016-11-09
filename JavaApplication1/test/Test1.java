@@ -1,5 +1,3 @@
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javaapplication1.Item;
 import javaapplication1.Pile;
 import javaapplication1.Bag;
@@ -13,6 +11,7 @@ public class Test1 {
     Item item1;
     Item item2;
     Item item3;
+    Item item4;
     Item itemFlat1;
     Item itemFlat2;
     Bag bag;
@@ -22,6 +21,7 @@ public class Test1 {
         item1 = new Item(6, "item1");
         item2 = new Item(3, "item", new String[]{"bla", "bla"});
         item3 = new Item(99, "itm", new String[]{"blabla"});
+        item4 = new Item(1, "itm", new String[]{"blabla"});
         itemFlat1 = new Item(14, "itemFlat2", new String[]{"flat"});
         itemFlat2 = new Item(14, "123412", new String[]{"flat"});
         bag = new Bag(2, 15, "bag", new String[]{"Black"});
@@ -35,8 +35,7 @@ public class Test1 {
         Assert.assertEquals(6f, item1.getWeight(), 0.001);
     }
     @Test
-    public void testBag() {
-        try {
+    public void testBag() throws ItemStoreException {
 //            Проверка на добавление элементов
             Assert.assertTrue(bag.addItem(item1));
             Assert.assertTrue(bag.addItem(item2));
@@ -53,9 +52,7 @@ public class Test1 {
             Assert.assertEquals(bag.itemSize(), 0);
 //            Проверка на то, что item1 не в контейнере
             Assert.assertFalse(item1.getContainsCondition());
-        } catch (ItemStoreException ex) {
-            Logger.getLogger(Test1.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         try {
             bag.addItem(item3);
         } catch (ItemStoreException ex) {
@@ -63,9 +60,8 @@ public class Test1 {
         }
         Assert.assertTrue(bagItemStoreException);    }
     @Test
-    public void testPile() {
+    public void testPile() throws ItemStoreException {
         Pile pile = new Pile(2, "pile");
-        try {
 //            Проверка на добавление элементов
             Assert.assertTrue(pile.addItem(itemFlat1));
             Assert.assertTrue(pile.addItem(itemFlat2));
@@ -76,9 +72,6 @@ public class Test1 {
             Assert.assertEquals(pile.pollItem(), itemFlat1);
 //            Проверка флага "убран из контейнера"
             Assert.assertFalse(itemFlat2.getContainsCondition());
-        } catch (ItemStoreException ex) {
-            Logger.getLogger(Test1.class.getName()).log(Level.SEVERE, null, ex);
-        }
         //        Проверка на заполнение неправильным элементом
         boolean onlyFlat = false;
         try {
@@ -89,16 +82,12 @@ public class Test1 {
         Assert.assertTrue(onlyFlat);
     }
     @Test
-    public void testBox() {
-        try {
+    public void testBox() throws ItemStoreException {
 //            Проверка на добавление элементов
             Assert.assertTrue(box.addItem(itemFlat1));
 //            Assert.assertTrue(box.addItem(itemFlat2));
 //            Проверка на извлечение
             Assert.assertEquals(box.removeRandomItem(), itemFlat1);
-        } catch (ItemStoreException ex) {
-            Logger.getLogger(Test1.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     @Test
     public void testAddSelf() {
@@ -123,8 +112,7 @@ public class Test1 {
         Assert.assertTrue(overflow);
     }
     @Test
-    public void testWeight() {
-        try {
+    public void testWeight() throws ItemStoreException {
             Assert.assertEquals(bag.getWeight(), 2, 0.01);
             bag.addItem(item1);
             Assert.assertEquals(bag.getWeight(), 8, 0.01);
@@ -133,8 +121,17 @@ public class Test1 {
             Assert.assertEquals(box.getWeight(), 10, 0.01);
             box.addItem(item2);
             Assert.assertEquals(box.getWeight(), 13, 0.01);
-        } catch (ItemStoreException ex) {
-            Logger.getLogger(Test1.class.getName()).log(Level.SEVERE, null, ex);
-        }
+////            Добавляем элемент в мешок 
+//            bag.addItem(item4);
+//            Assert.assertEquals(bag.getWeight(), 9, 0.01);
+//            Assert.assertEquals(box.getWeight(), 14, 0.01);
+            //        проверка на переполнение
+            boolean contain = false;
+            try {
+                bag.addItem(item4);
+            } catch (ItemStoreException ex) {
+                contain = true;
+            }
+            Assert.assertTrue(contain);
     }
 }

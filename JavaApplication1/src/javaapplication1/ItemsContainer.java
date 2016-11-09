@@ -13,6 +13,9 @@ public abstract class ItemsContainer extends Item {
         if (i==this) {
             throw new ItemStoreException("add self");
         }
+        if (this.getContainsCondition()){
+            throw new ItemStoreException("parent container exist");
+        }
         if (i.getContainsCondition()) {
             return false;
         } else {
