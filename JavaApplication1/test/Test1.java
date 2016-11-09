@@ -85,7 +85,6 @@ public class Test1 {
     public void testBox() throws ItemStoreException {
 //            Проверка на добавление элементов
             Assert.assertTrue(box.addItem(itemFlat1));
-//            Assert.assertTrue(box.addItem(itemFlat2));
 //            Проверка на извлечение
             Assert.assertEquals(box.removeRandomItem(), itemFlat1);
     }
@@ -121,11 +120,7 @@ public class Test1 {
             Assert.assertEquals(box.getWeight(), 10, 0.01);
             box.addItem(item2);
             Assert.assertEquals(box.getWeight(), 13, 0.01);
-////            Добавляем элемент в мешок 
-//            bag.addItem(item4);
-//            Assert.assertEquals(bag.getWeight(), 9, 0.01);
-//            Assert.assertEquals(box.getWeight(), 14, 0.01);
-            //        проверка на переполнение
+            //        проверка на добавление элементов в контейнер, находящийся в контейнере
             boolean contain = false;
             try {
                 bag.addItem(item4);
