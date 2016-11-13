@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,7 +29,6 @@ public class OktmoReader {
       break;
     }
       }
-      data.printStatuses();
     } catch (IOException ex) {
       System.out.println("Reading error in line " + lineCount);
       ex.printStackTrace();
@@ -53,19 +53,21 @@ public class OktmoReader {
         lineCount++;
 //        Если строка хранит соответствующие символы вначале
         String[] strItems = s.split("\\s+");
-        if (strItems.length > 6
-          && (strItems[0]+strItems[1]+strItems[2]+strItems[3]).matches("//d{11}")
-          && !"000".equals(strItems[3])) {
-//          just do it
+        if (strItems.length > 6 && !"000".equals(strItems[3])) {
+          String code = strItems[0] + strItems[1] + strItems[2] + strItems[3];
+//          if (code.matches("\\d{11}")) {
+          if (isNumeric(strItems[4]) && isNumeric(code)) {
+            long num = Long.parseLong(code);
+            String status = strItems[5];
+            String name = String
+                .join(" ", Arrays.copyOfRange(strItems, 6, strItems.length));
+            data.addPlase(new Place(num, name, status));
+          }
         }
-//                        System.out.println(splitValue[0]);
-//                        long num = Long.parseLong(splitValue[0] + splitValue[1] + splitValue[2]);
-//                    System.out.println((splitValue.length != 0) && (splitValue[0].matches("[-+]?\\d*\\.?\\d+")));
         if (lineCount == 100000) {
           break;
         }
       }
-      data.printStatuses();
     } catch (IOException ex) {
       System.out.println("Reading error in line " + lineCount);
       ex.printStackTrace();
@@ -77,5 +79,13 @@ public class OktmoReader {
       }
     }
     return data;
+  }
+  private static boolean isNumeric(String str) {
+    try {
+      long num = Long.parseLong(str);
+    } catch (NumberFormatException e) {
+      return false;
+    }
+    return true;
   }
 }
