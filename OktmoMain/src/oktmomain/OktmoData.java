@@ -25,15 +25,14 @@ public class OktmoData {
     Collections.sort(sortedPlaces, byName);
     sortedPlaces.forEach((t) -> out.println(t.name));
   }
-  public ArrayList<String> getTheFilteredValuesOfTheEighthCondition() { 
-    return (ArrayList<String>) this
-        .data.stream().filter((t) -> t.name.matches("^\\D{0,3}ово$"));
+  public ArrayList<Place> getTheFilteredValuesOfTheEighthCondition() { 
+    return (ArrayList<Place>) data.stream().filter((t) -> t.name.matches("^\\D{0,3}ово$"));
   }
 //  public void getCodes() { data.forEach((t) -> out.println(t)); }
 //  public TreeSet<String> getAllStatuses() { return allStatuses; }
 
-  void printFilterValues() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public ArrayList<Place> printFilterValues() {
+    return (ArrayList<Place>) data.stream().filter((t) -> t.name.matches("^(?ui:[цкнгшщзхвпрлджчсмтб]).*(\\1)$"));
   }
 }
 
