@@ -1,4 +1,3 @@
-import java.util.Collection;
 import oktmomain.OktmoData;
 import oktmomain.OktmoReader;
 import org.junit.Assert;
@@ -7,15 +6,16 @@ import org.junit.Test;
 
 public class Test1 {
 //    String path = "C:\\Users\\student\\Downloads\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
-//    String path = "C:\\Users\\Asus\\Desktop\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
-  String path = "C:\\Users\\Acer\\Downloads\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
+    String path = "C:\\Users\\Asus\\Desktop\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
+//  String path = "C:\\Users\\Acer\\Downloads\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
   OktmoData oktmo;
   OktmoData soktmo;
   @Before
   public void initialize() {
+    oktmo = OktmoReader.readPlaces(path);
   }
   @Test
-  public void testReaderReadPlaces() {
+  public void testReader_readPlaces() {
     long timeout = System.currentTimeMillis();
     oktmo = OktmoReader.readPlaces(path);
     timeout = System.currentTimeMillis() - timeout;
@@ -27,7 +27,7 @@ public class Test1 {
     Assert.assertEquals(11851000001l, oktmo.data.get(oktmo.data.size()-1).getCode());
   }
   @Test
-  public void testReaderReadPlacesViaSplit() {
+  public void testOktmoReader_readPlacesViaSplit() {
     long timeout = System.currentTimeMillis();
     soktmo = OktmoReader.readPlacesViaSplit(path);
     timeout = System.currentTimeMillis() - timeout;
@@ -40,12 +40,11 @@ public class Test1 {
   }
   @Test
   public void testStatuses() {
-    oktmo = OktmoReader.readPlaces(path);
     Assert.assertTrue(oktmo.allStatuses.contains("д"));
   }
   @Test
-  public void testEqualsPlases() {
-    oktmo = OktmoReader.readPlaces(path);
+//  Насколько данные, ч/з регулярку соотвутствуют данным ч/з обычные проверки
+  public void testPlace_equals() {
     soktmo = OktmoReader.readPlacesViaSplit(path);
     Assert.assertTrue(oktmo.data.equals(soktmo.data));
   }

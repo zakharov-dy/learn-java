@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0bb8013c-cf66-4c9e-8953-b5c18fc8f2bc" name="Default" comment="lr1. После первой попытки защиты">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JavaApplication1/nbproject/private/private.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/JavaApplication1/nbproject/private/private.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+    <list default="true" id="0bb8013c-cf66-4c9e-8953-b5c18fc8f2bc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/JavaApplication1/.idea/workspace.xml" afterPath="$PROJECT_DIR$/JavaApplication1/.idea/workspace.xml" />
     </list>
     <ignored path="usatuDatatehCourse.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -419,7 +415,14 @@
       <option name="project" value="LOCAL" />
       <updated>1478139689432</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="lr1. После первой попытки защиты">
+      <created>1478447832005</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1478447832005</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
