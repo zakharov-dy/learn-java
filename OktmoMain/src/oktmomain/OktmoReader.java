@@ -89,20 +89,21 @@ public class OktmoReader {
     return true;
   }
   
-  public static OktmoGroup readGroup(String fileName, OktmoGroup data) {
+  public static OktmoData readGroups(String fileName, OktmoData data) {
     //    public static void readPlaces(String fileName, OktmoData data) {
     BufferedReader br = null;
     int lineCount = 0;
     try {
       br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "cp1251")); // или cp1251
       String s;
-      Pattern p = Pattern.compile("^(\\d{2}\\s\\d{3}\\s\\d{3})\\s+\\d\\s+(.*)$");
+      Pattern p = Pattern.compile("^(\\d{2}\\s\\d{3}\\s000)\\s+\\d\\s+(.*)$");
+//      Pattern p = Pattern.compile("^(\\d{2})\\s(\\d{3})\\s000\\s+\\d\\s+(.*)$");
       while ((s = br.readLine()) != null) {
         lineCount++;
         Matcher m = p.matcher(s);
         if (m.matches()) {
           long num = Long.parseLong(m.group(1).replaceAll("\\s+", ""));
-          data.addGroup(new Place(num, m.group(3), m.group(2)));
+          data.addGroup(num, new OktmoGroup(num, m.group(2)));
         }
         if (lineCount == 100000) {
           break;
