@@ -9,21 +9,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OktmoReader {
-  public static OktmoData readPlaces(String fileName) {
+  public static OktmoData readPlaces(String fileName, OktmoData oktmo) {
     //    public static void readPlaces(String fileName, OktmoData data) {
     BufferedReader br = null;
     int lineCount = 0;
-    OktmoData data = new OktmoData();
     try {
       br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "cp1251")); // или cp1251
       String s;
-      Pattern p = Pattern.compile("^(\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}(?<!000))\\s+\\d\\s+(\\S)*\\s(.*)$");
+      Pattern p = Pattern.compile("^(\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}(?<!000))\\s+\\d\\s+(\\S)*\\s(.*)\\s*$");
       while ((s = br.readLine()) != null) {
         lineCount++;
         Matcher m = p.matcher(s);
     if (m.matches()) {
       long num = Long.parseLong(m.group(1).replaceAll("\\s+", ""));
-      data.addPlase(new Place(num, m.group(3), m.group(2)));
+      oktmo.addPlase(new Place(num, m.group(3), m.group(2)));
     }
     if (lineCount == 100000) {
       break;
@@ -39,7 +38,7 @@ public class OktmoReader {
         System.out.println("Can not close");
       }
     }
-    return data;
+    return oktmo;
   }
   public static OktmoData readPlacesViaSplit(String fileName) {
     //    public static void readPlaces(String fileName, OktmoData data) {
@@ -88,7 +87,6 @@ public class OktmoReader {
     }
     return true;
   }
-  
   public static OktmoData readGroups(String fileName, OktmoData data) {
     //    public static void readPlaces(String fileName, OktmoData data) {
     BufferedReader br = null;
@@ -103,7 +101,7 @@ public class OktmoReader {
         Matcher m = p.matcher(s);
         if (m.matches()) {
           long num = Long.parseLong(m.group(1).replaceAll("\\s+", ""));
-          data.addGroup(num, new OktmoGroup(num, m.group(2)));
+          data.addGroup(num, new OktmoGroup(num, m.group(2).trim()));
         }
         if (lineCount == 100000) {
           break;

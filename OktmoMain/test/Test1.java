@@ -6,18 +6,20 @@ import org.junit.Test;
 
 public class Test1 {
 //    String path = "C:\\Users\\student\\Downloads\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
-    String path = "C:\\Users\\Asus\\Desktop\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
-//  String path = "C:\\Users\\Acer\\Downloads\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
+//    String path = "C:\\Users\\Asus\\Desktop\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
+  String path = "C:\\Users\\Acer\\Downloads\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
   OktmoData oktmo;
   OktmoData soktmo;
   @Before
   public void initialize() {
-    oktmo = OktmoReader.readPlaces(path);
+    oktmo = new OktmoData();
+    OktmoReader.readPlaces(path, oktmo);
   }
   @Test
   public void testReader_readPlaces() {
     long timeout = System.currentTimeMillis();
-    oktmo = OktmoReader.readPlaces(path);
+    oktmo = new OktmoData();
+    OktmoReader.readPlaces(path, oktmo);
     timeout = System.currentTimeMillis() - timeout;
     System.out.println("first method: " + timeout);
     System.out.println(oktmo.data.size());

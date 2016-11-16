@@ -8,11 +8,13 @@ public class OktmoMain {
 //    String path = "C:\\Users\\Asus\\Desktop\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
     String path = "C:\\Users\\Acer\\Downloads\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
 //
-    OktmoData data = new OktmoData();
-//    OktmoAnalyzer analyser = new OktmoAnalyzer(oktmo);
-    OktmoReader.readGroups(path, data);
-    System.out.println(data.groups.get(58701000l).name);
-//    System.out.println(27600000 % 1000000);
+    OktmoData oktmo = new OktmoData();
+    OktmoAnalyzer analyser = new OktmoAnalyzer(oktmo);
+    OktmoReader.readPlaces(path, oktmo);
+    OktmoReader.readGroups(path, oktmo);
+//    System.out.println(data.groups.get(58701000l).name);
+//    analyser.printCountStatusesInRegion("Муниципальные образования Республики Коми");
+    analyser.findMostPopularPlaceName("Муниципальные образования Республики Коми");
 ////    НП, название которых содержит меньше 6 букв и заканчиваются на -ово
 //    System.out.println();
 //    ArrayList<Place> f11 = analyser.getTheFilteredValuesOfTheEleventhCondition();

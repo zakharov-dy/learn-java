@@ -10,8 +10,7 @@ public class OktmoGroup {
     level = ((c % 1000000) == 0) ? OktmoLevel.REGION : OktmoLevel.RAYON;
     code = c;
     name = n;
-    System.out.println(code + ": " + level);
+//    System.out.println(code + ": " + level);
+//    System.out.println(code + ": " + name + "!");
   }
-  
-  
 }
