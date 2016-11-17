@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,13 +15,13 @@ public class OktmoReader {
     try {
       br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "cp1251")); // или cp1251
       String s;
-      Pattern p = Pattern.compile("^(\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}(?<!000))\\s+\\d\\s+(\\S)*\\s(.*)\\s*$");
+      Pattern p = Pattern.compile("^(\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}(?<!000))\\s+\\d\\s+(\\S+)\\s(.*)$");
       while ((s = br.readLine()) != null) {
         lineCount++;
         Matcher m = p.matcher(s);
     if (m.matches()) {
       long num = Long.parseLong(m.group(1).replaceAll("\\s+", ""));
-      oktmo.addPlase(new Place(num, m.group(3), m.group(2)));
+      oktmo.addPlase(new Place(num, m.group(3).trim(), m.group(2)));
     }
     if (lineCount == 100000) {
       break;
@@ -40,27 +39,23 @@ public class OktmoReader {
     }
     return oktmo;
   }
-  public static OktmoData readPlacesViaSplit(String fileName) {
-    //    public static void readPlaces(String fileName, OktmoData data) {
+  public static OktmoData readPlacesViaSplit(String fileName, OktmoData oktmo) {
     BufferedReader br = null;
     int lineCount = 0;
-    OktmoData data = new OktmoData();
     try {
       br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "cp1251")); // или cp1251
       String s;
       while ((s = br.readLine()) != null) {
         lineCount++;
 //        Если строка хранит соответствующие символы вначале
-        String[] strItems = s.split("\\s+");
-        if (strItems.length > 6 && !"000".equals(strItems[3])) {
+        String[] strItems = s.split("\\s+", 7);
+        if (strItems.length == 7 && !"000".equals(strItems[3])) {
           String code = strItems[0] + strItems[1] + strItems[2] + strItems[3];
-//          if (code.matches("\\d{11}")) {
-          if (isNumeric(strItems[4]) && isNumeric(code)) {
-            long num = Long.parseLong(code);
+          long num = ifNumericReturnNumber(code);
+          if ((ifNumericReturnNumber(strItems[4]) >= 0) && (num > 0)) {
             String status = strItems[5];
-            String name = String
-                .join(" ", Arrays.copyOfRange(strItems, 6, strItems.length));
-            data.addPlase(new Place(num, name, status));
+            String name = strItems[6];
+            oktmo.addPlase(new Place(num, name.trim(), status));
           }
         }
         if (lineCount == 100000) {
@@ -77,15 +72,16 @@ public class OktmoReader {
         System.out.println("Can not close");
       }
     }
-    return data;
+    return oktmo;
   }
-  private static boolean isNumeric(String str) {
+  private static long ifNumericReturnNumber(String str) {
+    long val;
     try {
-      Long.parseLong(str);
+      val = Long.parseLong(str);
     } catch (NumberFormatException e) {
-      return false;
+      return -1;
     }
-    return true;
+    return val;
   }
   public static OktmoData readGroups(String fileName, OktmoData data) {
     //    public static void readPlaces(String fileName, OktmoData data) {
