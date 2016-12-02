@@ -12,54 +12,53 @@ public class Visitor implements Runnable {
   public Visitor(BusinessCenter p) {
     place = p;
     totalCount++;
-    floor = (int) Math.random() * 10;
+    floor = 2 + (int) (Math.random() * 9);
     num = totalCount;
   }
-  private void goUp() {
+  private void goUp() { liftLife(1, floor); }
+  private void goDown() { liftLife(floor, 1); }
+  
+  private void liftLife(int from, int to) {
     place.enterLift(this);
-//    System.out.println(this.toString() + " едет на этаж " +);
-    try {
-      Thread.sleep(floor*100 + 200);
-    } catch (InterruptedException ex) {
-      Logger.getLogger(Visitor.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    place.moveLift(from);
+    System.out.println(place.getTime() + toString() + "зашел в лифт");
+    place.moveLift(to);
     place.exitFromLift(this);
-    System.out.println("Visitor" + this.toString() + "is exit");
-    synchronized (place) {
-      place.notify();
-    }
-  }
-  private void goDown() {
-    place.enterLift(this);
-    System.out.println("" + this.toString() + "is enter");
-    try {
-      Thread.sleep(floor * 100 + 200);
-    } catch (InterruptedException ex) {
-      Logger.getLogger(Visitor.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    place.exitFromLift(this);
-    System.out.println("Visitor" + this.toString() + "is exit");
+    System.out.println(place.getTime() + toString() + "вышел из лифта");
     synchronized (place) {
       place.notify();
     }
   }
   private void doSomeWork() {
-    System.out.println("Visitor is work");
+    System.out.println(place.getTime() + toString() + " работает");
+    try {
+      Thread.sleep((int) Math.random() * 10000 + 2000);
+    } catch (InterruptedException ex) {
+      Logger.getLogger(Visitor.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    System.out.println(place.getTime() + toString() + " сделал своё дело " + toString() + " может уходить");
+  }
+  public void passControl() {
+    place.enterControl(this);
+    System.out.println(place.getTime() + toString() + "показывает документы");
     try {
       Thread.sleep((int) Math.random() * 100);
     } catch (InterruptedException ex) {
       Logger.getLogger(Visitor.class.getName()).log(Level.SEVERE, null, ex);
     }
-    System.out.println("Visitor ");
+    System.out.println(place.getTime() + toString() + "показал документы");
+    place.exitFromControl(this);
   }
   @Override
   public void run() {
+    passControl();
     goUp();
     doSomeWork();
     goDown();
   }
+  
   @Override
   public String toString () {
-    return Integer.toString(num);
+    return "Посетитель " + Integer.toString(num) + " ";
   }
 }

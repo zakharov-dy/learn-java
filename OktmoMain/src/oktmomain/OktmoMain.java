@@ -1,11 +1,9 @@
 package oktmomain;
 
-import java.util.ArrayList;
-
 public class OktmoMain {
   public static void main(String[] args) {
-    String path = "C:\\Users\\student\\Downloads\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
-//    String path = "C:\\Users\\Asus\\Desktop\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
+//    String path = "C:\\Users\\student\\Downloads\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
+    String path = "C:\\Users\\Asus\\Desktop\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
 //    String path = "C:\\Users\\Acer\\Downloads\\JavaLab2\\JavaLab2\\Tom1-CFO.txt";
 //
     OktmoData oktmo = new OktmoData();
@@ -31,7 +29,8 @@ public class OktmoMain {
       OktmoReader.readGroups(path, oktmo);
 //    System.out.println(data.groups.get(58701000l).name);
 ////    analyser.printCountStatusesInRegion("Муниципальные образования Республики Коми");
-    analyser.findMostPopularPlaceName("Муниципальные образования Республики Коми");
-//      analyser.findMostPopularPlaceName("Муниципальные образования Республики Коми");
+//    analyser.findMostPopularPlaceName("Муниципальные образования Республики Коми");
+    analyser.printCountStatusesInRegion("Муниципальные образования Республики Коми");
+//    analyser.countPlacesByEveryRayonsForRegion("Муниципальные образования Республики Коми");
   }
 }

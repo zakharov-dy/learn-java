@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class OktmoAnalyzer {
   OktmoData oktmo;
+  long most;
 
   public OktmoAnalyzer(OktmoData o) {
     oktmo = o;
+    most = 0;
   }
   
   public ArrayList<Place> sort() {
@@ -35,7 +36,7 @@ public class OktmoAnalyzer {
   public ArrayList<Place> getTheFilteredValuesOfTheEighthCondition() {
     return getTheFilteredData("^\\D{0,3}ово$");
   }
-
+  
   public ArrayList<Place> getTheFilteredValuesOfTheEleventhCondition() {
     return getTheFilteredData("^(?ui)([цкнгшщзхвпрлджчсмтб]).*(\\1)$");
   }
@@ -45,27 +46,26 @@ public class OktmoAnalyzer {
    * @param regionName
    */
   public void countPlacesByEveryRayonsForRegion(String regionName) {
-    OktmoGroup region = getGroupByName(regionName).get();
+    OktmoGroup region = oktmo.strGroups.get(regionName);
     if ((region != null) && region.level == OktmoGroup.OktmoLevel.REGION) {
       long div_pattern = region.code / 1000_000;
       long mod_pattern = region.code % 1000_000;
-      oktmo
-          .groups
-          .keySet()
-          .stream()
-          .filter((Long k) -> {
-            return (k / 1000_000 == div_pattern) && (k % 1000_000 != mod_pattern);
-          })
-//          TODO: Убрать тут большой цикл
-          .forEach((Long k) -> {
-            long pattern = oktmo.groups.get(k).code / 1000;
-            long raiting = oktmo
-                .data
-                .stream()
-                .filter((Place p) -> p.code / 1000_000 == pattern)
-                .count();
-            System.out.println(k + ": " + raiting);
-          });
+      HashMap<Long, Long> groupsRaiting = new HashMap<Long, Long>();
+      
+      oktmo.groups.forEach((Long t, OktmoGroup u) -> {
+        if ((t / 1000_000 == div_pattern) && (t % 1000_000 != mod_pattern)) {
+          groupsRaiting.put(t, 1l);
+        } 
+      });
+      oktmo.data.forEach((Place t) -> {
+        long key = (t.code / 1000_000) * 1000;
+        if (groupsRaiting.containsKey(key)) {
+          groupsRaiting.put(key, groupsRaiting.get(key) + 1);
+        }
+      });
+      groupsRaiting.forEach((Long t, Long u) -> {
+        System.out.println(t + ": " + u);
+      });
     }
   }
   
@@ -75,58 +75,56 @@ public class OktmoAnalyzer {
    * @param regionName
    */
   public void printCountStatusesInRegion(String regionName){
-    OktmoGroup region = getGroupByName(regionName).get();
+    OktmoGroup region = oktmo.strGroups.get(regionName);
     if ((region != null) && region.level == OktmoGroup.OktmoLevel.REGION) {
-      long pattern = region.code / 1000_000;
-      oktmo.allStatuses
-        .forEach((String s) -> {
-          long count = oktmo
-            .data
-            .stream()
-            .filter((Place d) -> d.status.equals(s) && (d.code/1000_000_000 == pattern))
-            .count();
-          System.out.println(s + ": " + count);
-        });
+      ArrayList<Place> regionPlaces = getPlacesByRegion(region);
+      HashMap<String, Long> statusRaiting = new HashMap<String, Long>();
+      regionPlaces.stream().forEach((Place t) -> {
+        if (statusRaiting.containsKey(t.status)) {
+          statusRaiting.put(t.status, statusRaiting.get(t.status) + 1);
+        } else {
+          statusRaiting.put(t.status, 1l);
+        }
+      });
+      statusRaiting.forEach((String t, Long u) -> {
+        System.out.println(t + ": " + u);
+      });
     }
   }
   
   public void findMostPopularPlaceName(String regionName) {
-    OktmoGroup region = getGroupByName(regionName).get();
-    long pattern = region.code / 1000_000;
-    ArrayList<Place> regionPlaces = (ArrayList<Place>) oktmo
-        .data
-        .stream()
-        .filter((Place t) -> t.code / 1000_000_000 == pattern)
-        .collect(Collectors.toList());
-    HashMap<String, Long> countSamePlaces = new HashMap <String, Long>();
-    regionPlaces.forEach((Place t) -> {
-      if (countSamePlaces.containsKey(t.name)) {
-        countSamePlaces.put(t.name, countSamePlaces.get(t.name) + 1);
-      }
-      else {
-        countSamePlaces.put(t.name, 1l);
-      }
-    });
-    countSamePlaces.forEach((String s, Long l) -> System.out.println(s + " " + l));
-    
-//    Comparator<String> byName = (String s1, String s2) -> countSamePlaces.get(s1) > countSamePlaces.get(s2) ? 1 : -1;
-//    ArrayList<String> popular = (ArrayList<String>) countSamePlaces.keySet().stream().sorted(byName).collect(Collectors.toList());
-//    popular.forEach(System.out::println);
+    OktmoGroup region = oktmo.strGroups.get(regionName);
+    if (region == null) {
+      System.err.println("Ошибка");
+    } else {
+      ArrayList<Place> regionPlaces = getPlacesByRegion(region);
+      HashMap<String, Long> countSamePlaces = new HashMap <String, Long>();
+      regionPlaces.forEach((Place t) -> {
+        if (countSamePlaces.containsKey(t.name)) {
+          final long num = countSamePlaces.get(t.name)+1;
+          countSamePlaces.put(t.name, num);
+          if (num > most) {
+              most = num;
+          }
+        }
+        else {
+          countSamePlaces.put(t.name, 1l);
+        }
+      });
+      countSamePlaces.keySet().stream()
+          .filter((String t) -> countSamePlaces.get(t) == most)
+          .forEach((String t) -> {System.err.println(t);});
+    }
   }
   
-  /**
-   *
-   * @param regionName
-   * @return Optional<OktmoGroup> - регион по имени
-   */
-  private Optional<OktmoGroup> getGroupByName(String name) {
-    return oktmo
-        .groups
+  
+  public ArrayList<Place> getPlacesByRegion(OktmoGroup region) {
+    long min = region.code * 1000;
+    long max = min + 1000_000_000l;
+    return (ArrayList<Place>) oktmo.dataAndKeys.subMap(min, max)
         .values()
         .stream()
-        .filter((OktmoGroup t) -> t.name.equals(name))
-        .findFirst();
-  };
+        .collect(Collectors.toList());
+  }
+  
 }
-
-

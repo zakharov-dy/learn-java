@@ -21,7 +21,7 @@ public class OktmoReader {
         Matcher m = p.matcher(s);
     if (m.matches()) {
       long num = Long.parseLong(m.group(1).replaceAll("\\s+", ""));
-      oktmo.addPlase(new Place(num, m.group(3).trim(), m.group(2)));
+      oktmo.addPlace(new Place(num, m.group(3).trim(), m.group(2)));
     }
     if (lineCount == 100000) {
       break;
@@ -55,7 +55,7 @@ public class OktmoReader {
           if ((ifNumericReturnNumber(strItems[4]) >= 0) && (num > 0)) {
             String status = strItems[5];
             String name = strItems[6];
-            oktmo.addPlase(new Place(num, name.trim(), status));
+            oktmo.addPlace(new Place(num, name.trim(), status));
           }
         }
         if (lineCount == 100000) {
@@ -97,7 +97,7 @@ public class OktmoReader {
         Matcher m = p.matcher(s);
         if (m.matches()) {
           long num = Long.parseLong(m.group(1).replaceAll("\\s+", ""));
-          data.addGroup(num, new OktmoGroup(num, m.group(2).trim()));
+          data.addGroup(num, m.group(2).trim());
         }
         if (lineCount == 100000) {
           break;
