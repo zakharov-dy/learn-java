@@ -16,20 +16,28 @@ public class BusinessCenter {
     controlFree = true;
   }
   
-  public void enterLift(Visitor v) {
+  public boolean enterLift(Visitor v) {
     synchronized (this) {
+      long beginTime = System.currentTimeMillis();
+      long sleepTime = 1000;
       if (!liftFree) {
         System.out.println(getTime() + v.toString() + " ждёт лифт");
       }
       while (!liftFree) {
         try {
-          this.wait();
+          this.wait(sleepTime);
+          long waitTime = System.currentTimeMillis() - beginTime;
+          if (waitTime >= 1000) {
+            return false;
+          }
+          sleepTime = sleepTime - waitTime;
         } catch (InterruptedException ex) {
           System.err.println("Rfrfrf");
         }
       }
       System.out.println(getTime() + v.toString() + "вызвал лифт");
       liftFree = false;
+      return true;
     }
   }  
   public boolean enterLift(Visitor v, boolean lalala) {
