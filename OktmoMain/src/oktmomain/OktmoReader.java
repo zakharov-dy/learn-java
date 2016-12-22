@@ -19,13 +19,13 @@ public class OktmoReader {
       while ((s = br.readLine()) != null) {
         lineCount++;
         Matcher m = p.matcher(s);
-    if (m.matches()) {
-      long num = Long.parseLong(m.group(1).replaceAll("\\s+", ""));
-      oktmo.addPlace(new Place(num, m.group(3).trim(), m.group(2)));
-    }
-    if (lineCount == 100000) {
-      break;
-    }
+        if (m.matches()) {
+          long num = Long.parseLong(m.group(1).replaceAll("\\s+", ""));
+          oktmo.addPlace(new Place(num, m.group(3).trim(), m.group(2)));
+        }
+        if (lineCount == 100000) {
+          break;
+        }
       }
     } catch (IOException ex) {
       System.out.println("Reading error in line " + lineCount);
