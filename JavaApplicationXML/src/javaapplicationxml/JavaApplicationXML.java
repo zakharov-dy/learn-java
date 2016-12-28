@@ -30,10 +30,12 @@ import org.xml.sax.SAXException;
 public class JavaApplicationXML {
   Document doc;
   public static void main(String[] args) throws SAXException, IOException {
-    JavaApplicationXML xml = new JavaApplicationXML("src/files/demo.svg");
+//    JavaApplicationXML xml = new JavaApplicationXML("src/files/demo.svg");/
 //    JavaApplicationXML xml = new JavaApplicationXML("src/files/clouds.svg");
-    xml.viewDocument();
-    xml.saveDemo();
+//    xml.viewDocument();
+//    xml.saveDemo();
+//    new XmlSax().process("src/files/UfaCenterSmall.xml", "src/files/osm.xsd");
+    new XmlSax().process("src/files/UfaCenter.xml", "src/files/osm.xsd");
   }
 
   public JavaApplicationXML(String file) throws SAXException {

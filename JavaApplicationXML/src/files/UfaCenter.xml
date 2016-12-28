@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<osm version="0.6" generator="CGImap 0.0.2" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+<osm version="0.6" generator="CGImap 0.0.2">
 
  <node id="27504327" lat="54.7262869" lon="55.9477285" user="-raul" uid="234874" visible="true" version="25" changeset="10529754" timestamp="2012-01-29T13:12:21Z">
   <tag k="addr:country" v="RU"/>
