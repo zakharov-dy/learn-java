@@ -132,21 +132,15 @@ public class JavaApplicationXML {
     Result sr2 = new StreamResult(System.out);
     DOMSource domSource = new DOMSource(doc);
 
-    //  DOMSource domSource = new DOMSource(i2);
-    // в newTransformer() можно было бы передать xslt - преобразование
     Transformer tr;
     try {
       tr = TransformerFactory.newInstance().newTransformer();
-
-      // настройки "преобразования"
       tr.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
       tr.setOutputProperty(OutputKeys.INDENT, "yes"); // отступы
-
       tr.transform(domSource, sr); // в файл
       tr.transform(domSource, sr2); // на экран
     } catch (TransformerException ex) {
       Logger.getLogger(JavaApplicationXML.class.getName()).log(Level.SEVERE, null, ex);
     }
-    // tr.transform(schemaSrc, sr2 ); // а теперь схему на экран
   }
 }

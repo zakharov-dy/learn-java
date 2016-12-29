@@ -58,7 +58,18 @@ public class XmlSax {
         }
       });
       rd.parse(is);
+      SaxXmlHandler2 myXmlHandler2 = new SaxXmlHandler2(myXmlHandler.streets);
+      rd.setContentHandler(myXmlHandler2);
+      InputSource is2;
+      try {
+        is2 = new InputSource(new FileInputStream(fname));
+      } catch (FileNotFoundException ex) {
+        Logger.getLogger(XmlSax.class.getName()).log(Level.SEVERE, null, ex);
+        return;
+      }
+      rd.parse(is2);
 //      System.out.println("result: " + myXmlHandler.names);
+      
     } catch (ParserConfigurationException ex) {
       System.err.println("Config Exception:  " + ex.getMessage());
     } catch (IOException ex) {

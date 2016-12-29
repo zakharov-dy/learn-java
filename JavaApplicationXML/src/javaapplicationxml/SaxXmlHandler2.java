@@ -8,6 +8,7 @@ import org.xml.sax.SAXException;
 
 class SaxXmlHandler2 implements ContentHandler {
   public HashMap<String, StreetData> streets;
+  String curWayId;
 
   public SaxXmlHandler2(HashMap<String, StreetData> hm) {
     streets = hm;
@@ -21,17 +22,19 @@ class SaxXmlHandler2 implements ContentHandler {
   }
 
   public void startDocument() throws SAXException {
+    System.out.println("kakaka");
   }
 
-  public void endDocument() throws SAXException {
+  public void endDocument() throws SAXException { 
   }
 
   public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+    if( qName.equals("way")){ curWayId = atts.getValue("id"); }
     String key = atts.getValue("k");
-    if (key.equals("addr:street")) {
+    if (key != null && key.equals("addr:street")) {
       String value = atts.getValue("v");
       if (!streets.containsKey(value)) {
-        System.out.println(value);
+        System.out.println(curWayId);
       } else {
         streets.get(value).incHC();
       }

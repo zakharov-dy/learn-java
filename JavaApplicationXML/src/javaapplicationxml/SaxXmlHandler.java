@@ -9,7 +9,6 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 class SaxXmlHandler implements ContentHandler {
-  private boolean nameTag;
   private boolean isBusStop;
   private boolean isWay;
   private boolean isNode;
@@ -51,12 +50,6 @@ class SaxXmlHandler implements ContentHandler {
       break;
     case "tag":
       String key = atts.getValue("k");
-      if (key.equals("addr:street")) {
-        String value = atts.getValue("v");
-        if (!streets.containsKey(value)) {
-          System.out.println(value);
-        } else {streets.get(value).incHC();}
-      }
       if (isNode) {
         if (isBusStop) {
           if (key.equals("name")) {
@@ -95,17 +88,6 @@ class SaxXmlHandler implements ContentHandler {
   }
 
   public void characters(char[] ch, int start, int length) throws SAXException {
-//    String chars = new String(ch, start, length).trim();
-//
-//    if (nameTag) {
-//      names.add(chars); // запомним
-//    }
-//
-//    if (chars.length() > 0) {
-//      System.out.printf("[L%d],Characters: ***%s***\n", loc.getLineNumber(), chars);
-//    } else {
-//      System.out.println("Characters: empty");
-//    }
   }
 
   public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
