@@ -20,7 +20,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
-public class XmlSax {
+public class Sax {
   public void process(String fname, String schemaName) {
     SAXParserFactory spf = SAXParserFactory.newInstance();
     Source schemaSrc = new StreamSource(new File(schemaName));
@@ -36,13 +36,13 @@ public class XmlSax {
     try {
       is = new InputSource(new FileInputStream(fname));
     } catch (FileNotFoundException ex) {
-      Logger.getLogger(XmlSax.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.getLogger(Sax.class.getName()).log(Level.SEVERE, null, ex);
       return;
     }
     try {
       SAXParser prs = spf.newSAXParser();
       XMLReader rd = prs.getXMLReader();
-      SaxXmlHandler myXmlHandler = new SaxXmlHandler();
+      SaxHandler myXmlHandler = new SaxHandler();
       rd.setContentHandler(myXmlHandler);
       rd.setErrorHandler(new ErrorHandler() {
         public void warning(SAXParseException exception) throws SAXException {
@@ -58,13 +58,14 @@ public class XmlSax {
         }
       });
       rd.parse(is);
-      SaxXmlHandler2 myXmlHandler2 = new SaxXmlHandler2(myXmlHandler.streets);
+      System.out.println(myXmlHandler.streets.size());
+      SaxHandler2 myXmlHandler2 = new SaxHandler2(myXmlHandler.streets);
       rd.setContentHandler(myXmlHandler2);
       InputSource is2;
       try {
         is2 = new InputSource(new FileInputStream(fname));
       } catch (FileNotFoundException ex) {
-        Logger.getLogger(XmlSax.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(Sax.class.getName()).log(Level.SEVERE, null, ex);
         return;
       }
       rd.parse(is2);

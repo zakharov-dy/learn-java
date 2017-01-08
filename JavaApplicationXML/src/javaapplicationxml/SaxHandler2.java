@@ -6,11 +6,11 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
-class SaxXmlHandler2 implements ContentHandler {
+class SaxHandler2 implements ContentHandler {
   public HashMap<String, StreetData> streets;
   String curWayId;
 
-  public SaxXmlHandler2(HashMap<String, StreetData> hm) {
+  public SaxHandler2(HashMap<String, StreetData> hm) {
     streets = hm;
   }
 

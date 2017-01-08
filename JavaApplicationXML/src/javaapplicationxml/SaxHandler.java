@@ -8,7 +8,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
-class SaxXmlHandler implements ContentHandler {
+class SaxHandler implements ContentHandler {
   private boolean isBusStop;
   private boolean isWay;
   private boolean isNode;
@@ -16,7 +16,7 @@ class SaxXmlHandler implements ContentHandler {
   public HashSet<String> busStopSet = new HashSet<String>();
   public HashMap<String, StreetData> streets = new HashMap<String, StreetData>();
 
-  public SaxXmlHandler() {
+  public SaxHandler() {
   }
 
   Locator loc = null;

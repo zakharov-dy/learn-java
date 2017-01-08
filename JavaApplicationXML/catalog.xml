@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/Users/Acer/Desktop/NetBeansProjects/usatuDatatehCourse/JavaApplicationXML/src/files/osm.xsd" uri="xml-resources/jaxb/ClassFromXSD/osm.xsd"/>
+</catalog>
