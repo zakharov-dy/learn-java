@@ -88,10 +88,7 @@ public class Jaxb {
   private void unmarshal(String name) throws JAXBException {
     JAXBContext jxc = JAXBContext.newInstance("javaapplicationxml.generated");
     Unmarshaller u = jxc.createUnmarshaller();
-//    JAXBElement je = (JAXBElement) u.unmarshal(new File(name));
     osm = (Osm) JAXBIntrospector.getValue(u.unmarshal(new File(name)));
-//    osm = (Osm) je.getValue();
-//    System.out.println(je.getValue());
   }
 
 }
