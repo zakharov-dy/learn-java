@@ -1,6 +1,5 @@
 package javaapplicationxml;
 import java.util.HashMap;
-import java.util.HashSet;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -9,6 +8,7 @@ import org.xml.sax.SAXException;
 class SaxHandler2 implements ContentHandler {
   public HashMap<String, StreetData> streets;
   String curWayId;
+  boolean isWay = false;
 
   public SaxHandler2(HashMap<String, StreetData> hm) {
     streets = hm;
@@ -17,24 +17,31 @@ class SaxHandler2 implements ContentHandler {
   Locator loc = null;
 
   public void setDocumentLocator(Locator locator) {
-    System.out.println("Set document locator=" + locator);
     loc = locator;
   }
 
   public void startDocument() throws SAXException {
-    System.out.println("kakaka");
+    System.out.println("SAX Дома без улиц");
   }
 
-  public void endDocument() throws SAXException { 
+  public void endDocument() throws SAXException {
+    System.out.println();
+    System.out.println("Sax Map<String, StreetData>");
+    streets.forEach((String s, StreetData data) -> {
+      System.out.println(s + " " + data.getPC() + " " + data.getHC());
+    });
   }
 
   public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-    if( qName.equals("way")){ curWayId = atts.getValue("id"); }
+    if( qName.equals("way")){ 
+      curWayId = atts.getValue("id");
+      isWay = true;
+    }
     String key = atts.getValue("k");
-    if (key != null && key.equals("addr:street")) {
+    if (isWay && key != null && key.equals("addr:street")) {
       String value = atts.getValue("v");
       if (!streets.containsKey(value)) {
-        System.out.println(curWayId);
+        System.out.println(curWayId + " " + value);
       } else {
         streets.get(value).incHC();
       }
@@ -42,6 +49,10 @@ class SaxHandler2 implements ContentHandler {
   }
 
   public void endElement(String uri, String localName, String qName) throws SAXException {
+    if (qName.equals("way")) {
+      curWayId = "-1";
+      isWay = false;
+    }
   }
 
   public void characters(char[] ch, int start, int length) throws SAXException {

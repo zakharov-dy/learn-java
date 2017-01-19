@@ -1,8 +1,6 @@
 package javaapplicationxml;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -13,6 +11,7 @@ class SaxHandler implements ContentHandler {
   private boolean isWay;
   private boolean isNode;
   private boolean isHighway;
+  private String curName; 
   public HashSet<String> busStopSet = new HashSet<String>();
   public HashMap<String, StreetData> streets = new HashMap<String, StreetData>();
 
@@ -22,7 +21,6 @@ class SaxHandler implements ContentHandler {
   Locator loc = null;
 
   public void setDocumentLocator(Locator locator) {
-    System.out.println("Set document locator=" + locator);
     loc = locator;
   }
 
@@ -31,13 +29,11 @@ class SaxHandler implements ContentHandler {
   }
 
   public void endDocument() throws SAXException {
+    System.out.println("Sax Остановки:");
     busStopSet.forEach((String s) -> {
       System.out.println(s);
     });
-    System.out.println("+++++++++++++++++Улицы короче++++++++++++++++++");
-    streets.forEach((String s, StreetData data) -> {
-      System.out.println(s + " " + data.getPC());
-    });
+    System.out.println();
   }
 
   public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
@@ -49,41 +45,31 @@ class SaxHandler implements ContentHandler {
       isWay = true;
       break;
     case "tag":
-      String key = atts.getValue("k");
-      if (isNode) {
-        if (isBusStop) {
-          if (key.equals("name")) {
-            busStopSet.add(atts.getValue("v"));
-          }
-        } else {
-          String value = atts.getValue("v");
-          if (value != null && value.equals("bus_stop")) {
-            isBusStop = true;
-          }
-        }
-        return;
-      }
-      if (isWay) {
-        if (isHighway && key.equals("name")) {
-          String value = atts.getValue("v");
-          if (!streets.containsKey(value)) {
-            streets.put(value, new StreetData());
-          }
-          streets.get(value).incPC();
-        } else if (key.equals("highway")) {
-          isHighway = true;
-        }
-      }
+      String k = atts.getValue("k");
+      String v = atts.getValue("v");
+      if (k.equals("name")) { curName = v; }
+      if (isNode && v != null && v.equals("bus_stop")) {isBusStop = true;}
+      else if (isWay && k.equals("highway")) { isHighway = true; }
       break;
     }
   }
 
   public void endElement(String uri, String localName, String qName) throws SAXException {
+    if (curName != null) {    
+      if (qName.equals("node") && isBusStop) { busStopSet.add(curName); } 
+      else if (qName.equals("way") && isHighway) {
+        if (!streets.containsKey(curName)) {
+          streets.put(curName, new StreetData());
+        }
+        streets.get(curName).incPC();
+      }
+    }
     if (qName.equals("node") || qName.equals("way")) {
       isHighway = false;
-      isBusStop = false;
       isWay = false;
       isNode = false;
+      isBusStop = false;
+      curName = null;
     }
   }
 

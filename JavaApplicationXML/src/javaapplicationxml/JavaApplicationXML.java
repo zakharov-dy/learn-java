@@ -10,8 +10,8 @@ public class JavaApplicationXML {
     Dom xml = new Dom("src/files/clouds.svg");
     xml.viewDocument();
     xml.saveDemo();
-    new Sax().process("src/files/UfaCenterSmall.xml", "src/files/osm.xsd");
 //    new Sax().process("src/files/UfaCenter.xml", "src/files/osm.xsd");
+    new Sax().process("src/files/UfaCenterSmall.xml", "src/files/osm.xsd");
     new Jaxb("src/files/UfaCenterSmall.xml");
   }
 }

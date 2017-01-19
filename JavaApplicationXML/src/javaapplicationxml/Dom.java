@@ -49,22 +49,24 @@ public class Dom {
   private void lookChildren(Node n, int level) {
     NodeList nl = n.getChildNodes();
     String space = "                                         ".substring(0, level);
-    int num = nl.getLength();
     Node curNode;
-    for (int i = 0; i < num; i++) {
+    for (int i = 0; i < nl.getLength(); i++) {
       curNode = nl.item(i);
       if (curNode.getNodeType() == Node.ELEMENT_NODE) {
         switch (curNode.getNodeName()) {
           case "circle":
-            System.out.printf(space + "ELEMENT: <%s>\n", curNode.getNodeName());
             lookAttrs(curNode);
             Element newElement = doc.createElement("circle");
-            curNode.getParentNode().insertBefore(newElement, curNode);
+            NamedNodeMap attributes = curNode.getAttributes();
+            newElement.setAttribute("cx", attributes.getNamedItem("cx").getNodeValue());
+            newElement.setAttribute("cy", attributes.getNamedItem("cy").getNodeValue());
+            newElement.setAttribute("r", "15");
+            newElement.setAttribute("style", "fill: yellow;");
+            curNode.getParentNode().insertBefore(newElement, curNode.getNextSibling());
             i++;
             break;
           case "rect":
             ((Element) curNode).setAttribute("style", "fill: black;");
-            System.out.printf(space + "ELEMENT: <%s>\n", curNode.getNodeName());
             lookAttrs(curNode);
             break;
           case "path":
@@ -82,19 +84,15 @@ public class Dom {
     int num = attrs.getLength();
     if (num == 0) { return; }
 
-    Node curNode;
-    System.out.print("[");
-    for (int i = 0; i < num; i++) {
-      curNode = attrs.item(i);
-      System.out.printf("%s=%s ", curNode.getNodeName(), curNode.getNodeValue());
-    }
-    System.out.printf("]\n");
+//    for (int i = 0; i < num; i++) {
+//      curNode = attrs.item(i);
+//    }
   }
 
   public void saveDemo() throws IOException {
 
     Result sr = new StreamResult(new FileWriter("src/files/out.xml"));
-    Result sr2 = new StreamResult(System.out);
+//    Result sr2 = new StreamResult(System.out);
     DOMSource domSource = new DOMSource(doc);
 
     Transformer tr;
@@ -103,7 +101,7 @@ public class Dom {
       tr.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
       tr.setOutputProperty(OutputKeys.INDENT, "yes"); // отступы
       tr.transform(domSource, sr); // в файл
-      tr.transform(domSource, sr2); // на экран
+//      tr.transform(domSource, sr2); // на экран
     } catch (TransformerException ex) {
       Logger.getLogger(JavaApplicationXML.class.getName()).log(Level.SEVERE, null, ex);
     }

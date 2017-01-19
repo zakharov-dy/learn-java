@@ -58,7 +58,6 @@ public class Sax {
         }
       });
       rd.parse(is);
-      System.out.println(myXmlHandler.streets.size());
       SaxHandler2 myXmlHandler2 = new SaxHandler2(myXmlHandler.streets);
       rd.setContentHandler(myXmlHandler2);
       InputSource is2;
